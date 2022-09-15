@@ -130,3 +130,6 @@ dmypy.json
 
 # Django Settings File to remove Secret Key
 settings.py
+
+# Django migrations
+migrations/
