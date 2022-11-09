@@ -6,7 +6,7 @@ class Tag(models.Model):
     class Meta:
         ordering = ['name']
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
@@ -21,7 +21,7 @@ class Product(models.Model):
 
     active = models.BooleanField(default=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'Name: {self.name}, in Stock: {self.stock}'
 
 class Cart(models.Model):
@@ -32,6 +32,9 @@ class Address(models.Model):
     city = models.CharField(max_length=255)
     postcode = models.CharField(max_length=10)
     country = models.CharField(max_length=20)
+
+    def __str__(self) -> str:
+        return f'{self.street_address}, {self.postcode} {self.city}, {self.country}'
 
 class Customer(models.Model):
     first_name = models.CharField(max_length=255)
@@ -53,7 +56,13 @@ class Supplier(models.Model):
 class ShippingCompany(models.Model):
     name = models.CharField(max_length=255)
 
+    def __str__(self) -> str:
+        return self.name
+
 class Order(models.Model):
     date = models.DateField
     shipping_company = models.ManyToManyField(to=ShippingCompany)
     products = models.JSONField()
+
+    def __str__(self) -> str:
+        return f'Order-ID: {self.id}'
