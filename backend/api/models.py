@@ -17,7 +17,7 @@ class Product(models.Model):
     stock = models.IntegerField(default=0)
     image = models.ImageField(null=True)
 
-    tags = models.ManyToManyField(to=Tag)
+    tags = models.ManyToManyField(to=Tag, blank=True)
 
     active = models.BooleanField(default=True)
 
@@ -25,7 +25,7 @@ class Product(models.Model):
         return f'Name: {self.name}, in Stock: {self.stock}'
 
 class Cart(models.Model):
-    products = models.ManyToManyField(to=Product)
+    products = models.ManyToManyField(to=Product, blank=True)
 
 class Address(models.Model):
     street_address = models.CharField(max_length=255)
@@ -45,6 +45,9 @@ class Customer(models.Model):
 
     cart = models.OneToOneField(to=Cart, on_delete=models.CASCADE)
 
+    def __str__(self) -> str:
+        return f'{self.first_name} {self.last_name}'
+
 class Supplier(models.Model):
     company_name = models.CharField(max_length=255)
     first_name = models.CharField(max_length=255)
@@ -63,6 +66,7 @@ class Order(models.Model):
     date = models.DateField
     shipping_company = models.ManyToManyField(to=ShippingCompany)
     products = models.JSONField()
+    customer = models.ForeignKey(to=Customer, null=True, on_delete=models.SET_NULL)
 
     def __str__(self) -> str:
         return f'Order-ID: {self.id}'

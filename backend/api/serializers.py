@@ -11,15 +11,21 @@ class TagSerializer(serializers.ModelSerializer):
         model = Tag
         fields = '__all__'
 
-class CustomerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Customer
-        fields = '__all__'
-
 class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
         fields = '__all__'
+
+class CustomerSerializer(serializers.ModelSerializer):
+    cart = CartSerializer(required=False)
+
+    def create(self, validated_data):
+        cart = Cart.objects.create()
+        return Customer.objects.create(cart=cart, **validated_data)
+
+    class Meta:
+        model = Customer
+        fields = ['id', 'first_name', 'last_name', 'email', 'address', 'cart']
 
 class SupplierSerializer(serializers.ModelSerializer):
     class Meta:
