@@ -1,4 +1,10 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
+
+from django.conf import settings
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+from rest_framework.authtoken.models import Token
 
 class Address(models.Model):
     street_address = models.CharField(max_length=255)
@@ -45,17 +51,22 @@ class Product(models.Model):
 class Cart(models.Model):
     products = models.ManyToManyField(to=Product, blank=True)
 
-class Customer(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    email = models.EmailField()
+class Customer(AbstractUser):
+    first_name = models.CharField(max_length=255, blank=True)
+    last_name = models.CharField(max_length=255, blank=True)
+    email = models.EmailField(blank=True)
 
-    address = models.OneToOneField(to=Address, on_delete=models.CASCADE)
+    address = models.OneToOneField(to=Address, on_delete=models.CASCADE, null=True)
 
-    cart = models.OneToOneField(to=Cart, on_delete=models.CASCADE)
+    cart = models.OneToOneField(to=Cart, on_delete=models.CASCADE, null=True)
 
     def __str__(self) -> str:
-        return f'{self.first_name} {self.last_name}'
+        return self.username
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
 
 class ShippingCompany(models.Model):
     name = models.CharField(max_length=255)

@@ -1,8 +1,10 @@
 from rest_framework import routers
+from django.urls import path
 from api.views import (
     ProductViewSet,
     TagViewSet,
     CustomerViewSet,
+    CustomerLogIn,
     CartViewSet,
     SupplierViewSet,
     AddressViewSet,
@@ -20,5 +22,9 @@ router.register(r'addresses', AddressViewSet)
 router.register(r'shipping-companies', ShippingCompanyViewSet)
 router.register(r'orders', OrderViewSet)
 
+urlpatterns = [
+    path('login/', CustomerLogIn.as_view()),
+]
+
 app_name = 'api'
-urlpatterns = router.urls
+urlpatterns += router.urls
