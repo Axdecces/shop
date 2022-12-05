@@ -133,3 +133,5 @@ settings.py
 
 # Django migrations
 migrations/
+
+.DS_Store
