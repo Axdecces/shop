@@ -1,25 +1,14 @@
-import logo from './logo.svg';
 import './App.css';
+import Hero from './components/Hero';
+import Navbar from './components/Navbar';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <div className="bg-red-800">Tailwind works!</div>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <span className="absolute h-screen w-screen border-4 border-primary inset-0" />
+      <Navbar />
+      <Hero />
+    </>
   );
 }
 
