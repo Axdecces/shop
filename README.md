@@ -1,2 +1,4 @@
-# shop
-A school project for creating a simple webshop using Django and React
+# BBS1 Shop Projekt
+Ein Schulprojekt zum Erstellen eines Online-Shops
+
+## Installation
