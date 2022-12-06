@@ -71,10 +71,13 @@ class ShippingCompanySerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
-        print('order created should send an email with the following producst')
+        customer = Customer.objects.get(username=self.context['request'].user)
+        validated_data['customer'] = customer
+
+        print('order created should send an email with the following products')
         print(validated_data['products'])
         return super().create(validated_data)
 
     class Meta:
         model = Order
-        fields = '__all__'
+        fields = ['date', 'products', 'shipping_company', 'customer']

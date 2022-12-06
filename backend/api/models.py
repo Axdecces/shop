@@ -39,7 +39,6 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     price = models.FloatField(default=0)
-    stock = models.IntegerField(default=0)
     image = models.ImageField(null=True)
 
     tags = models.ManyToManyField(to=Tag, blank=True)
@@ -78,7 +77,7 @@ class ShippingCompany(models.Model):
         return self.name
 
 class Order(models.Model):
-    date = models.DateField
+    date = models.DateField(auto_now_add=True)
     products = models.JSONField()
     customer = models.ForeignKey(to=Customer, null=True, on_delete=models.SET_NULL)
     shipping_company = models.ForeignKey(ShippingCompany, null=True, on_delete=models.SET_NULL)
