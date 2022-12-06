@@ -32,6 +32,9 @@ class Supplier(models.Model):
 
     address = models.OneToOneField(to=Address, on_delete=models.CASCADE)
 
+    def __str__(self) -> str:
+        return self.name
+
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
