@@ -125,7 +125,7 @@ const Product = ({}) => {
                           ))}
                         </div>
                         <h2 className="text-2xl font-medium tracking-tight text-tertiary sm:text-2xl">
-                          {product.price} €
+                          {product.price} EUR
                         </h2>
                         <p className="sr-only">
                           {reviews.average} out of 5 stars

@@ -65,7 +65,7 @@ const Cart = () => {
     createOrder(productList, 1).then((res) => {
       toast.success('Erfolgreich bestellt');
       setCartProducts([]);
-      navigate('/orders');
+      navigate('/profile');
     });
   };
 

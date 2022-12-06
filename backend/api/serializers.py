@@ -114,7 +114,6 @@ class OrderSerializer(serializers.ModelSerializer):
         email_body += f'Ihre Waren werden nach Zahlungseingang innerhalb des nächsten Werktages an das Versandunternehmen "{supplier}" übergeben.\n\n'
 
         print(email_body)
-        '''
         send_mail(
             subject='Bestellung erfasst',
             message=email_body,
@@ -122,7 +121,6 @@ class OrderSerializer(serializers.ModelSerializer):
             recipient_list=['simon.wagner@concat.de'],
             fail_silently=False,
         )
-        '''
 
         return super().create(validated_data)
 

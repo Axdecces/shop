@@ -17,7 +17,7 @@ from api.serializers import (
 )
 
 class ProductViewSet(ModelViewSet):
-	queryset = Product.objects.all()
+	queryset = Product.objects.filter(active=True)
 	serializer_class = ProductSerializer
 
 
