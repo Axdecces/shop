@@ -74,8 +74,37 @@ class OrderSerializer(serializers.ModelSerializer):
         customer = Customer.objects.get(username=self.context['request'].user)
         validated_data['customer'] = customer
 
-        print('order created should send an email with the following products')
-        print(validated_data['products'])
+        supplier = validated_data['shipping_company']
+        products = validated_data['products']
+
+        print(supplier_id)
+
+        email_body = ''
+
+        # Heading
+        email_body += 'Rechnung BBS1 Shop\n\n'
+        
+        # Customer Details
+        email_body += f'Kunde: {customer.id}\n'
+        email_body += f'{customer.first_name} {customer.last_name}\n'
+        email_body += f'{customer.email}\n\n'
+        email_body += f'{customer.address.street_address}\n'
+        email_body += f'{customer.address.postcode} {customer.address.city}\n'
+        email_body += f'{customer.address.country}\n\n'
+
+        # Text
+        email_body += 'Vielen Dank für ihre Bestellung beim BBS1 Shop.\n'
+        email_body += f'Ihre Waren werden innerhalb des nächsten Werktages an das Versandunternehmen {supplier} übergeben.\n\n'
+
+        # Product List
+        email_body += 'Ihre bestellten Produkte:\n'
+        for product in products:
+            email_body += f'{product.name}'
+
+
+
+        print(email_body)
+
         return super().create(validated_data)
 
     class Meta:
