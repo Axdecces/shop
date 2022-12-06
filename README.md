@@ -10,6 +10,8 @@ The REST-API was created by utilizing the django-rest-framework ModelSerializer,
 
 For easier conifguration the Django-Admin-Interface is also accessible at [http:localhost:8000/admin/](http:localhost:8000/admin/).
 
+We used a SQLite database for the application because it doesn't need a separat server for running the database and we don't need special user roles for accessing the database.
+
 For the frontend [React](https://reactjs.org/) in combination with [tailwindcss](https://tailwindcss.com/) was used.
 React also provides a service-worker, which makes it possible to download the application as a PWA (progressive web app).
 
