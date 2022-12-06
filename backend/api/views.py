@@ -44,11 +44,10 @@ class CustomerLogIn(ObtainAuthToken):
         })
 
 class CartViewSet(ModelViewSet):
-	permission_classes = [IsAuthenticated]
 	serializer_class = CartSerializer
 
 	def get_queryset(self):
-		return self.request.user.cart
+		return Cart.objects.all()
 
 class SupplierViewSet(ModelViewSet):
 	queryset = Supplier.objects.all()
