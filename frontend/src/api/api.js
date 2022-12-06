@@ -77,18 +77,18 @@ export const deleteCart = async (cartId) => {
     "password": "123456"
  */
 export const createCustomer = async (customer) => {
-  console.log('api.js createCustomer', customer);
   try {
-    const { data } = await api.post('/customers', customer);
+    const { data } = await api.post('/customers/', customer);
     return data;
   } catch (error) {
-    console.log(error);
+    console.log('error', error)
+    return error;
   }
 };
 
 export const getCustomer = async (customerId) => {
   try {
-    const { data } = await api.get(`/customers/${customerId}`);
+    const { data } = await api.get(`/customers/${customerId}/`);
     return data;
   } catch (error) {
     console.log(error);
@@ -127,7 +127,7 @@ export const deleteCustomer = async (customerId) => {
 
 export const login = async (username, password) => {
   try {
-    const { data } = await api.post('/login', {
+    const { data } = await api.post('/login/', {
       username,
       password,
     });

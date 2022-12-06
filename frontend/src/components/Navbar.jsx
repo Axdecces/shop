@@ -1,10 +1,12 @@
-import { Fragment } from 'react';
+import { Fragment, useContext } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import {
   Bars3Icon,
   ShoppingCartIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
+import { ShopContext } from '../contexts/ShopContext';
+import { toast } from 'react-toastify';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -19,6 +21,14 @@ function classNames(...classes) {
 }
 
 const Navbar = () => {
+  const { setLogout, token, setToken } = useContext(ShopContext);
+
+  const logout = () => {
+    setToken(null);
+    setLogout(true);
+    toast.success('You have been logged out')
+  };
+
   // check what page we are on
   const currentPage = window.location.pathname.slice(1);
   // delete / from currentPath
@@ -93,17 +103,31 @@ const Navbar = () => {
                   </a>
                 </div>
 
-                <div className="relative border-l-4 h-full justify-center flex items-center group  border-tertiary">
-                  <a
-                    href="/login"
-                    className={classNames(
-                      currentPage === 'login' ? 'bg-secondary text-white' : '',
-                      'px-3 py-2 text-sm font-medium focus:outline-none uppercase font-sans text-tertiary h-full hover:bg-secondary hover:text-white flex justify-center items-center'
-                    )}
-                  >
-                    Login
-                  </a>
-                </div>
+                {token ? (
+                  <div className="relative border-l-4 h-full justify-center flex items-center group  border-tertiary">
+                    <a
+                      href="/"
+                      className="px-3 py-2 text-sm font-medium focus:outline-none uppercase font-sans text-tertiary h-full hover:bg-secondary hover:text-white flex justify-center items-center"
+                      onClick={logout}
+                    >
+                      Logout
+                    </a>
+                  </div>
+                ) : (
+                  <div className="relative border-l-4 h-full justify-center flex items-center group  border-tertiary">
+                    <a
+                      href="/login"
+                      className={classNames(
+                        currentPage === 'login'
+                          ? 'bg-secondary text-white'
+                          : '',
+                        'px-3 py-2 text-sm font-medium focus:outline-none uppercase font-sans text-tertiary h-full hover:bg-secondary hover:text-white flex justify-center items-center'
+                      )}
+                    >
+                      Login
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           </div>

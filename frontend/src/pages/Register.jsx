@@ -77,13 +77,10 @@ const Register = ({}) => {
 
     createCustomer(customer)
       .then((data) => {
-        toast.success('Registration successful');
-        console.log(data);
+        if (data) {
+          toast.success('Registration successful');
+        }
       })
-      .catch((error) => {
-        toast.error('Registration failed');
-        console.log(error);
-      });
   };
 
   function classNames(...classes) {
