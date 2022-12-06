@@ -1,12 +1,17 @@
 import { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import {
+  Bars3Icon,
+  ShoppingCartIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
 
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Sale', href: '/sale' },
-  { name: 'Categories', href: '/categories' },
-  { name: 'Products', href: '/products' },
+  { name: 'Hoodies', href: '/hoodies' },
+  { name: 'Shirts', href: '/shirts' },
+  { name: 'Accessoire', href: '/accessoire' },
 ];
 
 function classNames(...classes) {
@@ -15,11 +20,13 @@ function classNames(...classes) {
 
 const Navbar = () => {
   // check what page we are on
-  const currentPath = window.location.pathname;
-  const currentPage = navigation.find((page) => page.href === currentPath);
+  const currentPage = window.location.pathname.slice(1);
+  // delete / from currentPath
+
+  console.log(currentPage);
 
   return (
-    <Disclosure as="nav" className="bg-white border-4 border-tertiary">
+    <Disclosure as="nav" className="bg-white border-y-4 border-tertiary">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl pl-2 sm:pl-6 lg:pl-8">
@@ -39,12 +46,12 @@ const Navbar = () => {
                 <div className="flex flex-shrink-0 items-center">
                   <img
                     className="block h-8 w-auto lg:hidden"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                    src="/bbs.jpg"
                     alt="Your Company"
                   />
                   <img
                     className="hidden h-8 w-auto lg:block"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                    src="/bbs.jpg"
                     alt="Your Company"
                   />
                 </div>
@@ -58,7 +65,9 @@ const Navbar = () => {
                         <a
                           href={item.href}
                           className={classNames(
-                            item.name === currentPage.name
+                            item.name.toLowerCase() === currentPage ||
+                              (item.name.toLowerCase() === 'home' &&
+                                currentPage === '')
                               ? 'bg-primary text-white'
                               : 'text-tertiary hover:bg-secondary hover:text-white',
                             'px-3 py-2 text-sm font-medium focus:outline-none uppercase font-sans ease-in-out duration-75'
@@ -75,20 +84,24 @@ const Navbar = () => {
                   </div>
                 </div>
               </div>
-              <div className="absolute inset-y-0 right-0 flex items-center h-full pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button
-                  type="button"
-                  className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                >
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
+              <div className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto sm:ml-6 sm:pr-0 gap-2 h-full">
+                <div className="relative justify-center flex items-center group  border-tertiary">
+                  <a
+                    href="/cart"
+                    className="flex-row gap-2 px-3 py-2 text-sm font-medium focus:outline-none uppercase font-sans text-tertiary h-full hover:bg-secondary hover:text-white flex justify-center items-center"
+                  >
+                    <ShoppingCartIcon className="h-6 w-6" />
+                    <p>Cart</p>
+                  </a>
+                </div>
 
-                {/* Profile dropdown */}
-                <div className="relative ml-3 border-l-4 h-full justify-center flex items-center group  border-tertiary ">
+                <div className="relative border-l-4 h-full justify-center flex items-center group  border-tertiary">
                   <a
                     href="/login"
-                    className="px-3 py-2 text-sm font-medium focus:outline-none uppercase font-sans text-tertiary h-full hover:bg-secondary hover:text-white flex justify-center items-center"
+                    className={classNames(
+                      currentPage === 'login' ? 'bg-secondary text-white' : '',
+                      'px-3 py-2 text-sm font-medium focus:outline-none uppercase font-sans text-tertiary h-full hover:bg-secondary hover:text-white flex justify-center items-center'
+                    )}
                   >
                     Login
                   </a>
@@ -97,7 +110,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          <Disclosure.Panel className="sm:hidden">
+          <Disclosure.Panel className="md:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
               {navigation.map((item) => (
                 <Disclosure.Button
