@@ -44,8 +44,11 @@ class CustomerLogIn(ObtainAuthToken):
         })
 
 class CartViewSet(ModelViewSet):
-	queryset = Cart.objects.all()
+	permission_classes = [IsAuthenticated]
 	serializer_class = CartSerializer
+
+	def get_queryset(self):
+		return self.request.user.cart
 
 class SupplierViewSet(ModelViewSet):
 	queryset = Supplier.objects.all()
@@ -61,5 +64,7 @@ class ShippingCompanyViewSet(ModelViewSet):
 
 class OrderViewSet(ModelViewSet):
 	permission_classes = [IsAuthenticated]
-	queryset = Order.objects.all()
 	serializer_class = OrderSerializer
+
+	def get_queryset(self):
+		return Order.objects.filter(customer=self.request.user)

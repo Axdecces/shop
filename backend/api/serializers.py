@@ -34,13 +34,21 @@ class CustomerSerializer(serializers.ModelSerializer):
         address_data = validated_data.pop('address')
         address = Address.objects.create(**address_data)
 
+        password = validated_data.pop('password')
+
         customer = Customer.objects.create(address=address, email=validated_data['username'], **validated_data)
+        customer.set_password(password)
+        customer.save()
+
         return customer
 
     class Meta:
         model = Customer
-        fields = ['id', 'first_name', 'last_name', 'username', 'email', 'address', 'cart']
-        extra_kwargs = {'cart': {'required': False}}
+        fields = ['id', 'first_name', 'last_name', 'username', 'password', 'email', 'address', 'cart']
+        extra_kwargs = {
+            'cart': {'required': False},
+            'password': {'write_only': True}
+        }
 
 class SupplierSerializer(serializers.ModelSerializer):
     address = AddressSerializer()

@@ -16,11 +16,11 @@ router = routers.SimpleRouter()
 router.register(r'products', ProductViewSet)
 router.register(r'tags', TagViewSet)
 router.register(r'customers', CustomerViewSet)
-router.register(r'carts', CartViewSet)
+router.register(r'carts', CartViewSet, basename='carts')
 router.register(r'suppliers', SupplierViewSet)
 router.register(r'addresses', AddressViewSet)
 router.register(r'shipping-companies', ShippingCompanyViewSet)
-router.register(r'orders', OrderViewSet)
+router.register(r'orders', OrderViewSet, basename='orders')
 
 urlpatterns = [
     path('login/', CustomerLogIn.as_view()),
