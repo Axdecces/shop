@@ -5,18 +5,32 @@ import { ShopContext } from '../contexts/ShopContext';
 
 const ProductList = () => {
   const { products } = React.useContext(ShopContext);
-  const [productList, setProductList] = React.useState(products);
+  const [filteredProducts, setFilteredProducts] = React.useState([]);
   const url = window.location.href;
   const tag = url.split('/').pop();
 
-  useEffect(() => {
-    if (!tag) return;
-    const filteredProducts = productList.filter((product) => {
-      return product.tags.includes(tag.toLowerCase());
-    });
+  const tagMapping = [{ 1: 'sale' }, { 2: 'hoodies' }, { 3: 'shirts' }];
 
-    setProductList(filteredProducts);
-  }, [tag]);
+  // set filtered products if products are loaded
+  useEffect(() => {
+    if (products.length > 0) {
+      if (tag === 'sale') {
+        setFilteredProducts(
+          products.filter((product) => product.tags.includes(1))
+        );
+      } else if (tag === 'hoodies') {
+        setFilteredProducts(
+          products.filter((product) => product.tags.includes(2))
+        );
+      } else if (tag === 'shirts') {
+        setFilteredProducts(
+          products.filter((product) => product.tags.includes(3))
+        );
+      } else {
+        setFilteredProducts(products);
+      }
+    }
+  }, [products, tag]);
 
   return (
     <div className="bg-white">
@@ -24,7 +38,7 @@ const ProductList = () => {
         <h2 className="sr-only">Products</h2>
 
         <div className="grid grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-2 md:grid-cols-3 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-4 lg:gap-x-8">
-          {productList.map((product) => (
+          {filteredProducts.map((product) => (
             <Link to={`/product/${product.id}`} key={product.id}>
               <div className="button group relative bg-white border-2 border-tertiary flex flex-col overflow-hidden font-sans ease-in-out duration-200 hover:shadow-product shadow-none">
                 <div className="aspect-w-2 aspect-h-4 bg-gray-200 sm:aspect-none border-b-2 border-tertiary">

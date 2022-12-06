@@ -6,7 +6,7 @@ const api = axios.create({
 
 export const getProducts = async () => {
   try {
-    const { data } = await api.get('/products');
+    const { data } = await api.get('/products/');
     return data;
   } catch (error) {
     console.log(error);
@@ -15,7 +15,7 @@ export const getProducts = async () => {
 
 export const getTags = async () => {
   try {
-    const { data } = await api.get('/tags');
+    const { data } = await api.get('/tags/');
     return data;
   } catch (error) {
     console.log(error);
@@ -24,7 +24,7 @@ export const getTags = async () => {
 
 export const createCart = async () => {
   try {
-    const { data } = await api.post('/carts');
+    const { data } = await api.post('/carts/');
     return data;
   } catch (error) {
     console.log(error);
@@ -33,7 +33,7 @@ export const createCart = async () => {
 
 export const getCart = async (cartId) => {
   try {
-    const { data } = await api.get(`/carts/${cartId}`);
+    const { data } = await api.get(`/carts/${cartId}/`);
     return data;
   } catch (error) {
     console.log(error);
@@ -42,8 +42,8 @@ export const getCart = async (cartId) => {
 
 export const updateCart = async (cartId, products) => {
   try {
-    const { data } = await api.patch(`/carts/${cartId}`, {
-      products: [products],
+    const { data } = await api.patch(`/carts/${cartId}/`, {
+      products: products,
     });
     return data;
   } catch (error) {
@@ -53,7 +53,7 @@ export const updateCart = async (cartId, products) => {
 
 export const deleteCart = async (cartId) => {
   try {
-    const { data } = await api.delete(`/carts/${cartId}`);
+    const { data } = await api.delete(`/carts/${cartId}/`);
     return data;
   } catch (error) {
     console.log(error);
@@ -81,7 +81,7 @@ export const createCustomer = async (customer) => {
     const { data } = await api.post('/customers/', customer);
     return data;
   } catch (error) {
-    console.log('error', error)
+    console.log('error', error);
     return error;
   }
 };
@@ -97,7 +97,7 @@ export const getCustomer = async (customerId) => {
 
 export const updateCustomer = async (customerId, customer) => {
   try {
-    const { data } = await api.patch(`/customers/${customerId}`, {
+    const { data } = await api.patch(`/customers/${customerId}/`, {
       firstName: customer.firstName,
       lastName: customer.lastName,
       username: customer.username,
@@ -118,7 +118,7 @@ export const updateCustomer = async (customerId, customer) => {
 
 export const deleteCustomer = async (customerId) => {
   try {
-    const { data } = await api.delete(`/customers/${customerId}`);
+    const { data } = await api.delete(`/customers/${customerId}/`);
     return data;
   } catch (error) {
     console.log(error);
@@ -134,5 +134,39 @@ export const login = async (username, password) => {
     return data;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const createOrder = async (products, shippingCompany) => {
+  try {
+    const { data } = await api.post(
+      '/orders/',
+      {
+        products,
+        shipping_company: shippingCompany,
+      },
+      {
+        headers: {
+          Authorization: `Token ${localStorage.getItem('token')}`,
+        },
+      }
+    );
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getOrders = async () => {
+  try {
+    const { data } = await api.get('/orders/', {
+      headers: {
+        Authorization: `Token ${localStorage.getItem('token')}`,
+      },
+    });
+    console.log(data);
+    return data;
+  } catch (error) {
+    return error;
   }
 };

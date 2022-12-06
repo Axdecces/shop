@@ -3,6 +3,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import {
   Bars3Icon,
   ShoppingCartIcon,
+  UserIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
 import { ShopContext } from '../contexts/ShopContext';
@@ -26,7 +27,7 @@ const Navbar = () => {
   const logout = () => {
     setToken(null);
     setLogout(true);
-    toast.success('You have been logged out')
+    toast.success('You have been logged out');
   };
 
   // check what page we are on
@@ -37,9 +38,9 @@ const Navbar = () => {
     <Disclosure as="nav" className="bg-white border-y-4 border-tertiary">
       {({ open }) => (
         <>
-          <div className="mx-auto max-w-7xl pl-2 sm:pl-6 lg:pl-8">
+          <div className="mx-auto max-w-7xl pl-2 md:pl-6 lg:pl-8">
             <div className="relative flex h-16 items-center justify-between">
-              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+              <div className="absolute inset-y-0 left-0 flex items-center md:hidden">
                 {/* Mobile menu button*/}
                 <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   <span className="sr-only">Open main menu</span>
@@ -50,7 +51,7 @@ const Navbar = () => {
                   )}
                 </Disclosure.Button>
               </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+              <div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
                 <div className="flex flex-shrink-0 items-center">
                   <img
                     className="block h-8 w-auto lg:hidden"
@@ -63,7 +64,7 @@ const Navbar = () => {
                     alt="Your Company"
                   />
                 </div>
-                <div className="hidden sm:ml-6 sm:block">
+                <div className="hidden md:ml-6 md:block">
                   <div className="flex space-x-4 justify-center items-center h-full">
                     {navigation.map((item) => (
                       <div
@@ -81,9 +82,6 @@ const Navbar = () => {
                             'px-3 py-2 text-sm font-medium focus:outline-none uppercase font-sans ease-in-out duration-75'
                           )}
                           aria-current={item.current ? 'page' : undefined}
-                          onClick={() => {
-                            console.log('clicked');
-                          }}
                         >
                           {item.name}
                         </a>
@@ -92,16 +90,26 @@ const Navbar = () => {
                   </div>
                 </div>
               </div>
-              <div className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto sm:ml-6 sm:pr-0 gap-2 h-full">
+              <div className="absolute inset-y-0 right-0 flex items-center md:static md:inset-auto md:ml-6 md:pr-0 gap-2 h-full">
                 <div className="relative justify-center flex items-center group  border-tertiary">
                   <a
                     href="/cart"
                     className="flex-row gap-2 px-3 py-2 text-sm font-medium focus:outline-none uppercase font-sans text-tertiary h-full hover:bg-secondary hover:text-white flex justify-center items-center"
                   >
-                    <ShoppingCartIcon className="h-6 w-6" />
-                    <p>Cart</p>
+                    <ShoppingCartIcon className="h-8 w-8" />
                   </a>
                 </div>
+
+                {token && (
+                  <div className="relative justify-center flex items-center group  border-tertiary">
+                    <a
+                      href="/profile"
+                      className="flex-row gap-2 px-3 py-2 text-sm font-medium focus:outline-none uppercase font-sans text-tertiary h-full hover:bg-secondary hover:text-white flex justify-center items-center"
+                    >
+                      <UserIcon className="h-8 w-8" />
+                    </a>
+                  </div>
+                )}
 
                 {token ? (
                   <div className="relative border-l-4 h-full justify-center flex items-center group  border-tertiary">

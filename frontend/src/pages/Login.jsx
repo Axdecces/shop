@@ -5,7 +5,7 @@ import { login } from '../api/api';
 import { ShopContext } from '../contexts/ShopContext';
 
 const Login = ({}) => {
-  const { setToken, setUser } = useContext(ShopContext);
+  const { setToken, setUserId, setUser } = useContext(ShopContext);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [username, setUsername] = React.useState(email);
@@ -21,7 +21,7 @@ const Login = ({}) => {
     login(username, password).then((res) => {
       if (res.token) {
         setToken(res.token);
-        setUser(res.id);
+        setUserId(res.id);
         toast.success('Login successful');
         // Redirect to home page
         navigate('/');

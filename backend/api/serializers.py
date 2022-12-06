@@ -84,7 +84,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
         # Heading
         email_body += 'Rechnung BBS1 Shop\n\n'
-        
+        print(validated_data)
         # Customer Details
         email_body += f'Kunde {str(customer.id).zfill(5)}\n'
         email_body += f'{customer.first_name} {customer.last_name}\n'
@@ -92,14 +92,17 @@ class OrderSerializer(serializers.ModelSerializer):
         email_body += f'{customer.address.street_address}\n'
         email_body += f'{customer.address.postcode} {customer.address.city}\n'
         email_body += f'{customer.address.country}\n\n'
-
         # Product List
         email_body += 'Ihre bestellten Produkte:\n'
         total = 0
         for product in products:
-            total += product.price
-            email_body += f'{product.name} {product.price}\n'
-            email_body += f'{product.description}\n'
+            print(product)
+            name = product["name"]
+            price = product["price"]
+            total += price
+            description = product["description"]
+            email_body += f'{name} --- {price} EUR\n'
+            email_body += f'{description}\n'
             email_body += '----------\n'
         
         email_body += f'Gesamtbetrag: {total} €\n\n'
@@ -111,6 +114,7 @@ class OrderSerializer(serializers.ModelSerializer):
         email_body += f'Ihre Waren werden nach Zahlungseingang innerhalb des nächsten Werktages an das Versandunternehmen "{supplier}" übergeben.\n\n'
 
         print(email_body)
+        '''
         send_mail(
             subject='Bestellung erfasst',
             message=email_body,
@@ -118,6 +122,7 @@ class OrderSerializer(serializers.ModelSerializer):
             recipient_list=['simon.wagner@concat.de'],
             fail_silently=False,
         )
+        '''
 
         return super().create(validated_data)
 

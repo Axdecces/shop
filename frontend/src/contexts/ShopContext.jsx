@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { getCart, getCustomer } from '../api/api';
+import { getCart, getCustomer, getProducts, updateCart } from '../api/api';
 // create a context
 // create a provider
 export const productsMockup = [
@@ -64,8 +64,9 @@ export const productsMockup = [
 export const ShopContext = React.createContext();
 
 export const ShopProvider = ({ children }) => {
-  const [products] = useState(productsMockup);
+  const [products, setProducts] = useState([]);
   const [user, setUser] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [cart, setCart] = useState(null);
   const [cartProducts, setCartProducts] = useState([]);
   const [token, setToken] = useState(null);
@@ -81,12 +82,21 @@ export const ShopProvider = ({ children }) => {
     if (token) {
       // put token in localstorage
       localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-      getCustomer(Number(user)).then((data) => {
+      localStorage.setItem('userId', JSON.stringify(userId));
+      // put cartProducts in localstorage
+      getCustomer(userId).then((data) => {
         setUser(data);
       });
     }
   }, [token]);
+
+  useEffect(() => {
+    if (cart) {
+      updateCart(cart, cartProducts).then((data) => {
+        return data;
+      });
+    }
+  }, [cartProducts]);
 
   useEffect(() => {
     if (user) {
@@ -99,10 +109,15 @@ export const ShopProvider = ({ children }) => {
 
   // check if user is logged in
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      setToken(token);
-      setUser(JSON.parse(localStorage.getItem('user')));
+    getProducts().then((data) => {
+      setProducts(data);
+    });
+
+    const tokenExist = localStorage.getItem('token');
+    if (tokenExist) {
+      setToken(tokenExist);
+      setUserId(JSON.parse(localStorage.getItem('userId')));
+      return;
     }
   }, []);
 
@@ -113,6 +128,7 @@ export const ShopProvider = ({ children }) => {
       setToken(null);
       localStorage.removeItem('token');
       localStorage.removeItem('user');
+      localStorage.removeItem('cartProducts');
       setLogout(false);
     }
   }, [logout]);
@@ -120,6 +136,10 @@ export const ShopProvider = ({ children }) => {
   return (
     <ShopContext.Provider
       value={{
+        setUserId,
+        userId,
+        cartProducts,
+        setCartProducts,
         products,
         user,
         setUser,

@@ -10,6 +10,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import Footer from './components/Footer';
 import { ShopProvider } from './contexts/ShopContext';
 import Register from './pages/Register';
+import Cart from './pages/Cart';
+import Profile from './pages/Profile';
 
 function App() {
   return (
@@ -19,10 +21,12 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<ProductList />} />
-          <Route path="/:tag" element={<ProductList />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/product/:id" element={<Product />} />
+          <Route path="/:tag/" element={<ProductList />} />
+          <Route path="/login/" element={<Login />} />
+          <Route path="/register/" element={<Register />} />
+          <Route path="/product/:id/" element={<Product />} />
+          <Route path="/cart/" element={<Cart />} />
+          <Route path="/profile/" element={<Profile />} />
         </Routes>
         <ToastContainer />
       </Router>

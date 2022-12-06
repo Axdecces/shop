@@ -1,12 +1,7 @@
 import React, { useContext, useEffect } from 'react';
-import { ShopContext } from '../contexts/ShopContext';
 
 const Hero = ({ title }) => {
-  const context = useContext(ShopContext);
-  useEffect(() => {
-    console.log('user-context', context.user);
-    console.log('cart-context', context.cart);
-  }, [context]);
+
   return (
     <>
       <h1 className="font-sans text-8xl ease-in-out duration-300 cursor-default font-bold text-orange-800 text-center uppercase md:block hidden">
