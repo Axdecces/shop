@@ -48,7 +48,7 @@ class Product(models.Model):
     active = models.BooleanField(default=True)
 
     def __str__(self) -> str:
-        return f'Name: {self.name}, in Stock: {self.stock}'
+        return self.name
 
 class Cart(models.Model):
     products = models.ManyToManyField(to=Product, blank=True)
