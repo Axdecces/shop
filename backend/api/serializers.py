@@ -114,13 +114,14 @@ class OrderSerializer(serializers.ModelSerializer):
         email_body += f'Ihre Waren werden nach Zahlungseingang innerhalb des nächsten Werktages an das Versandunternehmen "{supplier}" übergeben.\n\n'
 
         print(email_body)
-        send_mail(
-            subject='Bestellung erfasst',
-            message=email_body,
-            from_email=settings.SERVER_EMAIL,
-            recipient_list=['simon.wagner@concat.de'],
-            fail_silently=False,
-        )
+        if settings.EMAIL_ACTIVE:
+            send_mail(
+                subject='Bestellung erfasst',
+                message=email_body,
+                from_email=settings.SERVER_EMAIL,
+                recipient_list=['simon.wagner@concat.de'],
+                fail_silently=False,
+            )
 
         return super().create(validated_data)
 
