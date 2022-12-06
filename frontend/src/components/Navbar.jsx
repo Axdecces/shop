@@ -23,8 +23,6 @@ const Navbar = () => {
   const currentPage = window.location.pathname.slice(1);
   // delete / from currentPath
 
-  console.log(currentPage);
-
   return (
     <Disclosure as="nav" className="bg-white border-y-4 border-tertiary">
       {({ open }) => (

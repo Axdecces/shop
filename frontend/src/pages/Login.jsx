@@ -1,9 +1,20 @@
 import React from 'react';
 import { toast } from 'react-toastify';
+import { login } from '../api/api';
 
 const Login = ({}) => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+
+  const handleLogin = () => {
+    login(email, password)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8 font-sans">
@@ -42,12 +53,21 @@ const Login = ({}) => {
           </div>
 
           <div>
-            <button className="group relative w-full h-full text-tertiary">
+            <button
+              className="group relative w-full h-full text-tertiary"
+              onClick={handleLogin}
+            >
               <span className="absolute inset-0 -bottom-0 bg-secondary border-4 border-tertiary" />
               <div className="relative bg-primary w-full h-full px-4 py-2 border-4 border-tertiary uppercase active:translate-x-0 active:translate-y-0 hover:translate-x-1.5 hover:-translate-y-1.5 ease-in-out duration-200">
                 login
               </div>
             </button>
+            <div className="flex flex-row pt-2 gap-1">
+              Don't have an account?{' '}
+              <a href="/register" className="text-secondary">
+                Register
+              </a>
+            </div>
           </div>
         </form>
       </div>
