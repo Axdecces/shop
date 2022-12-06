@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
+import { getCart, getCustomer } from '../api/api';
 // create a context
 // create a provider
 export const productsMockup = [
@@ -66,6 +67,7 @@ export const ShopProvider = ({ children }) => {
   const [products] = useState(productsMockup);
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState(null);
+  const [cartProducts, setCartProducts] = useState([]);
   const [token, setToken] = useState(null);
   const [logout, setLogout] = useState(false);
 
@@ -74,11 +76,43 @@ export const ShopProvider = ({ children }) => {
     addToCart(cart.id, cart);
   }, [cart]);
  */
+
+  useEffect(() => {
+    if (token) {
+      // put token in localstorage
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+      getCustomer(Number(user)).then((data) => {
+        setUser(data);
+      });
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (user) {
+      getCart(user.cart).then((data) => {
+        setCart(data.id);
+        setCartProducts(data.products);
+      });
+    }
+  }, [user]);
+
+  // check if user is logged in
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setToken(token);
+      setUser(JSON.parse(localStorage.getItem('user')));
+    }
+  }, []);
+
   useEffect(() => {
     if (logout) {
       setUser(null);
       setCart(null);
       setToken(null);
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
       setLogout(false);
     }
   }, [logout]);
@@ -93,6 +127,7 @@ export const ShopProvider = ({ children }) => {
         setCart,
         setLogout,
         token,
+        setToken,
       }}
     >
       {children}

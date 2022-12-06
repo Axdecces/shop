@@ -1,19 +1,32 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import { login } from '../api/api';
+import { ShopContext } from '../contexts/ShopContext';
 
 const Login = ({}) => {
+  const { setToken, setUser } = useContext(ShopContext);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [username, setUsername] = React.useState(email);
 
-  const handleLogin = () => {
-    login(email, password)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  useEffect(() => {
+    setUsername(email);
+  }, [email]);
+
+  const navigate = useNavigate();
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    login(username, password).then((res) => {
+      if (res.token) {
+        setToken(res.token);
+        setUser(res.id);
+        toast.success('Login successful');
+        // Redirect to home page
+        navigate('/');
+      }
+    });
   };
 
   return (
@@ -24,8 +37,7 @@ const Login = ({}) => {
             Sign in to your account
           </h2>
         </div>
-        <form className="mt-8 space-y-6" action="#" method="POST">
-          <input type="hidden" name="remember" defaultValue="true" />
+        <form className="mt-8 space-y-6">
           <div className="-space-y-px shadow-sm flex flex-col gap-5">
             <div>
               <label htmlFor="email-address" className="sr-only">
@@ -39,6 +51,7 @@ const Login = ({}) => {
                 required
                 className="relative block w-full border-4 p-2 appearance-none border-tertiary x-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                 placeholder="Email address"
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
@@ -48,6 +61,8 @@ const Login = ({}) => {
               <input
                 className="relative block w-full border-4 p-2 appearance-none border-tertiary x-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                 placeholder="Password"
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
           </div>
