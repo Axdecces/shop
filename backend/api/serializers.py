@@ -4,6 +4,9 @@ from api.models import Product, Tag, Customer, Cart, Supplier, Address, Shipping
 from collections import OrderedDict
 from django.core.exceptions import ValidationError
 
+from django.conf import settings
+from django.core.mail import send_mail
+
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
@@ -77,33 +80,38 @@ class OrderSerializer(serializers.ModelSerializer):
         supplier = validated_data['shipping_company']
         products = validated_data['products']
 
-        print(supplier_id)
-
         email_body = ''
 
         # Heading
         email_body += 'Rechnung BBS1 Shop\n\n'
         
         # Customer Details
-        email_body += f'Kunde: {customer.id}\n'
+        email_body += f'Kunde {customer.id}\n'
         email_body += f'{customer.first_name} {customer.last_name}\n'
         email_body += f'{customer.email}\n\n'
         email_body += f'{customer.address.street_address}\n'
         email_body += f'{customer.address.postcode} {customer.address.city}\n'
         email_body += f'{customer.address.country}\n\n'
 
-        # Text
-        email_body += 'Vielen Dank für ihre Bestellung beim BBS1 Shop.\n'
-        email_body += f'Ihre Waren werden innerhalb des nächsten Werktages an das Versandunternehmen {supplier} übergeben.\n\n'
-
         # Product List
         email_body += 'Ihre bestellten Produkte:\n'
         for product in products:
-            email_body += f'{product.name}'
+            email_body += f'{product.name} {product.price}\n'
+            email_body += f'{product.description}\n'
+            email_body += '----------\n'
 
-
+        # Text
+        email_body += 'Vielen Dank für ihre Bestellung beim BBS1 Shop.\n'
+        email_body += f'Ihre Waren werden innerhalb des nächsten Werktages an das Versandunternehmen "{supplier}" übergeben.\n\n'
 
         print(email_body)
+        send_mail(
+            subject='Bestellung erfasst',
+            message=email_body,
+            from_email=settings.SERVER_EMAIL,
+            recipient_list=['simon.wagner@concat.de'],
+            fail_silently=False,
+        )
 
         return super().create(validated_data)
 
